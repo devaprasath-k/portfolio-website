@@ -9,7 +9,7 @@ import './Contact.css';
 // matching server-side keys if you send via the Node API instead).
 const EMAILJS_SERVICE_ID = 'service_25twz05';
 const EMAILJS_NOTIFY_TEMPLATE_ID = 'template_ug00iqn';
-const EMAILJS_REPLY_TEMPLATE_ID = 'template_g24grhg';
+const EMAILJS_REPLY_TEMPLATE_ID = 'template_g24qrhg';
 const EMAILJS_PUBLIC_KEY = 'pvHK0lhKZ0bJ0hw47';
 
 function useContactForm() {
