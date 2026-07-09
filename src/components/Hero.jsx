@@ -61,7 +61,7 @@ export default function Hero() {
           className="hero-actions"
         >
           <a href="#projects" className="btn-primary-glow">View My Work →</a>
-          <a href="https://collection.cloudinary.com/sf9xcpxc/efd7d246ec71a0cad68fdf473297ede5" download className="btn-outline-glow">
+          <a href={resume} download className="btn-outline-glow">
             Download Resume ⬇
           </a>
         </motion.div>
