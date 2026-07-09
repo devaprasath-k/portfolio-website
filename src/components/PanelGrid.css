@@ -1,0 +1,166 @@
+.bento-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  padding: 30px 0 60px;
+  align-items: start;
+}
+
+.panel {
+  padding: 22px;
+}
+
+/* About — one container, photo + flowing text, no extra sub-boxes */
+.about-body {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.about-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.about-text p { margin: 0; line-height: 1.7; }
+.about-text p svg { margin-right: 6px; color: var(--secondary); }
+
+@media (max-width: 700px) {
+  .about-body { flex-direction: column; align-items: center; text-align: center; }
+}
+
+.about-photo {
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Soft blurred glow sitting BEHIND the frame — this is what gives the
+   "exciting" ambient light effect around the photo. Positioned with
+   absolute + inset so it's always exactly the frame's size, just blurred
+   and slightly larger. */
+.about-photo::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  border-radius: 28px;
+  filter: blur(22px);
+  opacity: 0.55;
+  z-index: 0;
+  animation: glowPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.97); }
+  50%      { opacity: 0.7; transform: scale(1.04); }
+}
+
+/* Fixed, explicit size so the frame and the image inside it always match
+   exactly — this is what "fits perfectly" actually depends on. */
+.about-photo-frame {
+  position: relative;
+  z-index: 1;
+  width: 220px;
+  height: 270px;
+  padding: 5px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  background-size: 220% 220%;
+  animation: gradientMove 6s ease infinite, floatY 4s ease-in-out infinite;
+  box-shadow: 0 0 35px rgba(139, 92, 246, 0.35);
+  transition: transform 0.35s ease;
+}
+
+.about-photo-frame:hover {
+  transform: scale(1.04) rotate(-1deg);
+}
+
+/* The image fills the frame exactly, minus the 5px padding that shows as
+   a gradient border — object-fit: cover means it always fills that box
+   without stretching, no matter the source photo's original proportions. */
+.about-photo-frame .profile-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 16px;
+  background: var(--card);
+}
+
+@keyframes gradientMove {
+  0%   { background-position: left top; }
+  50%  { background-position: right bottom; }
+  100% { background-position: left top; }
+}
+
+@media (max-width: 700px) {
+  .about-photo-frame { width: 180px; height: 220px; }
+}
+
+.about-meta {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+.about-meta li { display: flex; align-items: center; gap: 8px; }
+.btn-outline-glow.small { padding: 8px 16px; font-size: 0.85rem; }
+
+/* Skills mini grid inside bento row */
+.skills-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.skill-mini-card {
+  background: var(--card-light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.78rem;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.skill-mini-card:hover { transform: translateY(-3px) rotate(-1deg); box-shadow: var(--shadow-glow); }
+.skill-mini-card svg { font-size: 1.3rem; color: var(--primary); margin-bottom: 4px; }
+
+/* Projects mini list */
+.project-mini-card {
+  background: var(--card-light);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.project-mini-thumb {
+  height: 90px;
+  background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(0,224,255,0.15));
+}
+.project-mini-body { padding: 12px; }
+.project-mini-body h4 { margin: 0 0 4px; font-size: 0.95rem; }
+.project-mini-body p { margin: 0 0 8px; font-size: 0.8rem; color: var(--text-dim); }
+.project-mini-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.tag { font-size: 0.68rem; padding: 3px 8px; border-radius: 20px; background: rgba(139,92,246,0.15); color: var(--secondary); }
+.project-mini-links { display: flex; gap: 14px; font-size: 1rem; }
+.project-mini-links a { color: var(--text-dim); }
+.project-mini-links a:hover { color: var(--secondary); }
+
+/* Contact mini form */
+.contact-mini-form { display: flex; flex-direction: column; gap: 10px; }
+.contact-mini-form input,
+.contact-mini-form textarea {
+  background: var(--card-light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 0.85rem;
+}
+.contact-mini-form textarea { resize: none; min-height: 70px; }
+.contact-mini-form input:focus,
+.contact-mini-form textarea:focus { outline: none; border-color: var(--secondary); }

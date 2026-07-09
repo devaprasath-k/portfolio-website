@@ -1,0 +1,197 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+:root {
+  --bg: #050816;
+  --card: #111827;
+  --card-rgb: 17, 24, 39;
+  --card-light: #161f36;
+  --primary: #8B5CF6;
+  --secondary: #00E0FF;
+  --accent: #A855F7;
+  --text: #ffffff;
+  --text-dim: #a1a8c3;
+  --border: rgba(139, 92, 246, 0.25);
+  --sidebar-w: 230px;
+  --radius: 16px;
+  --shadow-glow: 0 0 25px rgba(139, 92, 246, 0.25);
+}
+
+/* Light theme — applied when Sidebar's toggle sets
+   document.documentElement.setAttribute('data-theme', 'light') */
+:root[data-theme="light"] {
+  --bg: #f7f8fc;
+  --card: #ffffff;
+  --card-rgb: 255, 255, 255;
+  --card-light: #eef0f8;
+  --text: #14151f;
+  --text-dim: #565b70;
+  --border: rgba(139, 92, 246, 0.22);
+  --shadow-glow: 0 0 22px rgba(139, 92, 246, 0.18);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+
+/* ---------- Layout ---------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(139,92,246,0.10), transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(0,224,255,0.08), transparent 35%),
+    var(--bg);
+}
+
+.main-content {
+  margin-left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w));
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
+/* Each direct section takes the full viewport and softly settles into place
+   after scrolling stops — "proximity" (not "mandatory") lets a click-driven
+   scrollIntoView() jump straight to a distant section without being fought. */
+.snap-section {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 32px 40px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.foot{
+  min-height: 0vh;
+  box-sizing: border-box;
+  padding: 0px 40px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .main-content { margin-left: 0; width: 100%; }
+  .snap-section { padding: 24px 18px; }
+}
+
+/* ---------- Reusable surfaces ---------- */
+.glass {
+  background: rgba(var(--card-rgb), 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card-surface {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.card-surface:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--primary);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-border {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 1px;
+  background: linear-gradient(120deg, var(--primary), var(--secondary), var(--accent));
+  background-size: 200% 200%;
+  animation: borderFlow 6s ease infinite;
+}
+@keyframes borderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.btn-primary-glow {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border: none;
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: box-shadow .25s ease, transform .2s ease;
+}
+.btn-primary-glow:hover { box-shadow: 0 0 22px rgba(139,92,246,0.55); transform: translateY(-2px); color: #fff; }
+
+.btn-outline-glow {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color .25s ease, background .25s ease;
+}
+.btn-outline-glow:hover { border-color: var(--secondary); background: rgba(0,224,255,0.06); color: var(--text); }
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.section-title svg { color: var(--primary); }
+
+.text-dim { color: var(--text-dim); }
+
+/* floating ambient blobs */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+.float { animation: floatY 4s ease-in-out infinite; }
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin-slow { animation: spinSlow 18s linear infinite; }
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: .6; filter: drop-shadow(0 0 6px var(--primary)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 16px var(--secondary)); }
+}
+.pulse-glow { animation: pulseGlow 2.4s ease-in-out infinite; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 8px; }

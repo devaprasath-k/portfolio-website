@@ -1,0 +1,47 @@
+.skills-full { padding: 40px 0; }
+
+/* Marquee — the wrapper clips overflow and fades the edges;
+   the track holds TWO copies of the row's cards back to back so the
+   loop point (translateX -50%) is visually seamless. */
+.marquee-wrap {
+  overflow: hidden;
+  margin-bottom: 22px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 18px;
+  animation: marqueeScroll 26s linear infinite;
+}
+
+.marquee-track.marquee-reverse {
+  animation-direction: reverse;
+  animation-duration: 30s; /* slightly different speed so the two rows don't feel synced */
+}
+
+/* Pause whichever row the cursor is over, so cards are readable on hover */
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-card {
+  flex: 0 0 200px;   /* fixed width so cards don't squash inside the flex track */
+  padding: 20px;
+  text-align: center;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }   /* exactly one full copy's width */
+}
+
+.skill-icon { font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
+.skill-card h4 { margin: 0 0 6px; font-size: 1rem; }
+.skill-card p { font-size: 0.8rem; margin: 0; }
+
+@media (max-width: 700px) {
+  .marquee-card { flex-basis: 160px; padding: 16px; }
+}

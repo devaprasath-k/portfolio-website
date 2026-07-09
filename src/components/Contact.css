@@ -1,0 +1,35 @@
+.contact-info-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+.contact-info-mini span { display: flex; align-items: center; gap: 8px; }
+
+.contact-full { padding: 40px 0 60px; }
+.contact-glass { padding: 34px; max-width: 700px; margin: 0 auto; }
+
+.contact-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.contact-form-grid .full { grid-column: 1 / -1; }
+.contact-form-grid input,
+.contact-form-grid textarea {
+  background: var(--card-light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+}
+.contact-form-grid textarea { min-height: 120px; resize: none; }
+.contact-form-grid input:focus,
+.contact-form-grid textarea:focus { outline: none; border-color: var(--secondary); }
+.contact-form-grid button { justify-content: center; }
+
+@media (max-width: 600px) {
+  .contact-form-grid { grid-template-columns: 1fr; }
+}

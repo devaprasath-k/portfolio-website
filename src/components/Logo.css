@@ -1,0 +1,36 @@
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 6px 14px rgba(139, 92, 246, 0.45));
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.logo-shadow {
+  fill: #000;
+  opacity: 0.28;
+  filter: blur(3px);
+}
+
+.logo-body {
+  animation: aquaFloat 3.2s ease-in-out infinite;
+  transform-origin: 50px 50px;
+}
+
+.logo-shine {
+  animation: aquaFloat 3.2s ease-in-out infinite;
+  transform-origin: 50px 50px;
+  pointer-events: none;
+}
+
+/* Body and shine float together — same animation, same timing, so the
+   highlight always stays glued to the glass surface as it moves. */
+@keyframes aquaFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
