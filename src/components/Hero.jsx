@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { FaReact, FaNodeJs, FaJava, FaPython, FaGitAlt, FaLaptopCode } from 'react-icons/fa';
 import { SiMongodb, SiMysql } from 'react-icons/si';
 import './Hero.css';
+import resume from '../assets/Devaprasath_K_MERN_Resume.pdf'
 
 const ORBIT_ICONS = [
   { icon: <FaJava />, top: '4%', left: '38%', color: '#f89820' },
