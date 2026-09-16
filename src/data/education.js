@@ -8,16 +8,16 @@ const education = [
     detail: 'CGPA 7.5. Focused on full-stack development, AI/ML fundamentals, and software engineering practices.',
   },
   {
-    title: '[Your 12th / Diploma title]',
-    institution: '[Your school/institution name]',
-    period: '[Year] – [Year]',
-    detail: '[Optional: stream, percentage, or highlight]',
+    title: '12th',
+    institution: 'Government.Higher.Secondary.School',
+    period: '2021 – 20222',
+    detail: 'Percentage: 75.5%',
   },
   {
-    title: '[Your 10th standard]',
-    institution: '[Your school name]',
-    period: '[Year]',
-    detail: '[Optional: percentage or highlight]',
+    title: '10th',
+    institution: 'Government.Higher.Secondary.School',
+    period: '2019 – 2020',
+    detail: '68%',
   },
 ];
 
