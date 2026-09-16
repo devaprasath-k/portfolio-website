@@ -1,98 +1,49 @@
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: var(--sidebar-w);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 26px 18px;
-  z-index: 50;
-  border-radius: 0;
-  border-right: 1px solid var(--border);
+/* Premium Responsive Navbar - Sidebar.css */
+.sidebar{position:fixed;top:0;left:0;width:100%;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:1000;background:rgba(var(--card-rgb),.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.sidebar-top{display:flex;align-items:center;gap:12px}
+.sidebar-name{font-size:1.1rem;font-weight:700;color:var(--text);white-space:nowrap}
+.menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
+.sidebar-nav{display:flex;align-items:center;gap:8px;flex:1;justify-content:center}
+.sidebar-link{position:relative;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;color:var(--text-dim);text-decoration:none;transition:.3s}
+.sidebar-link:hover{background:rgba(139,92,246,.12);color:var(--text);transform:translateY(-2px)}
+
+/* Active link: underline instead of a filled pill background.
+   ::after draws a thin gradient bar under the label, positioned with the
+   same left/right inset as the link's own padding so it lines up neatly
+   under the icon+text, not the full row width. */
+.sidebar-link.active{
+  background:none;
+  color:var(--text);
+  box-shadow:none;
+}
+.sidebar-link.active::after{
+  content:'';
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:2px;
+  height:2px;
+  border-radius:2px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
 }
 
-.sidebar-top {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-}
+.sidebar-icon{display:flex}
+.sidebar-bottom{display:flex;align-items:center}
+.theme-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:rgba(139,92,246,.08);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s}
+.theme-toggle:hover{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
 
-.sidebar-name {
-  font-size: 1.05rem;
-  font-weight: 700;
-  text-align: center;
+@media(max-width:992px){
+.sidebar{padding:0 18px;justify-content:flex-start;gap:10px}
+.sidebar-top{order:1}
+.menu-toggle{display:block;order:2;margin-left:auto}
+.sidebar-bottom{order:3}
+.sidebar-nav{order:4;position:absolute;top:72px;left:0;width:100%;display:none;flex-direction:column;background:var(--card);padding:18px;border-bottom:1px solid var(--border)}
+.sidebar-nav.open{display:flex}
+.sidebar-link{width:100%;justify-content:flex-start}
+.sidebar-link.active::after{left:14px;right:auto;bottom:6px;width:24px;}
 }
-
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-}
-
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 14px;
-  border-radius: 10px;
-  color: var(--text-dim);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: background .2s ease, color .2s ease, transform .2s ease;
-}
-
-.sidebar-link:hover {
-  background: rgba(139, 92, 246, 0.08);
-  color: #fff;
-  transform: translateX(3px);
-}
-
-.sidebar-link.active {
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  color: #fff;
-  box-shadow: 0 0 16px rgba(139,92,246,0.4);
-}
-
-.sidebar-icon { font-size: 1rem; display: flex; }
-
-.sidebar-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
-
-.sidebar-socials {
-  display: flex;
-  gap: 14px;
-  font-size: 1.05rem;
-}
-.sidebar-socials a {
-  color: var(--text-dim);
-  transition: color .2s ease, transform .2s ease;
-}
-.sidebar-socials a:hover { color: var(--secondary); transform: translateY(-2px); }
-
-.theme-toggle {
-  background: rgba(139,92,246,0.1);
-  border: 1px solid var(--border);
-  color: var(--text);
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-@media (max-width: 900px) {
-  .sidebar { display: none; }
+@media(max-width:576px){
+.sidebar-name{font-size:.95rem}
+.sidebar{height:64px}
+.sidebar-nav{top:64px}
 }

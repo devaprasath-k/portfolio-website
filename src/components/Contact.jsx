@@ -1,19 +1,41 @@
 import { useState } from 'react';
-import { FaPaperPlane, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaPaperPlane, FaEnvelope, FaMapMarkerAlt, FaSpinner } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import api from '../utils/api.js';
 import './Contact.css';
 
-// Fill these in from your EmailJS dashboard (see backend/.env.example for the
-// matching server-side keys if you send via the Node API instead).
 const EMAILJS_SERVICE_ID = 'service_25twz05';
 const EMAILJS_NOTIFY_TEMPLATE_ID = 'template_ug00iqn';
 const EMAILJS_REPLY_TEMPLATE_ID = 'template_g24qrhg';
 const EMAILJS_PUBLIC_KEY = 'pvHK0lhKZ0bJ0hw47';
 
-function useContactForm() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+const EMPTY_FORM = { name: '', email: '', subject: '', message: '' };
+
+// One floating-label field: the label sits inside the input at rest, and
+// floats up above it the moment the field has focus OR already has a
+// value — the CSS drives this off the :focus and :placeholder-shown
+// pseudo-classes, no extra JS state needed per field.
+function FloatingField({ id, label, type = 'text', textarea = false, value, onChange }) {
+  const Tag = textarea ? 'textarea' : 'input';
+  return (
+    <div className="floating-field">
+      <Tag
+        id={id}
+        name={id}
+        type={textarea ? undefined : type}
+        value={value}
+        onChange={onChange}
+        placeholder=" "   /* a non-empty placeholder is required for :placeholder-shown to work as the "empty" detector */
+        required
+      />
+      <label htmlFor={id}>{label}</label>
+    </div>
+  );
+}
+
+export default function Contact() {
+  const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,12 +44,8 @@ function useContactForm() {
     e.preventDefault();
     setLoading(true);
 
-    // Save to the database FIRST — this is what makes it show up in the
-    // admin dashboard's Messages tab. It's a public route (no login needed),
-    // just rate-limited on the backend to stop spam.
-    // This runs independently of EmailJS: even if your backend is briefly
-    // down, the emails below still try to send; even if EmailJS fails, the
-    // message is still saved so you don't lose it.
+    // Save to the database first — independent of whether EmailJS
+    // succeeds, so the message is never lost even if email delivery fails.
     try {
       await api.post('/messages', form);
     } catch (err) {
@@ -38,7 +56,7 @@ function useContactForm() {
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_NOTIFY_TEMPLATE_ID, form, EMAILJS_PUBLIC_KEY);
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_REPLY_TEMPLATE_ID, form, EMAILJS_PUBLIC_KEY);
       toast.success('Message sent! I will get back to you soon.');
-      setForm({ name: '', email: '', subject: '', message: '' });
+      setForm(EMPTY_FORM);
     } catch (err) {
       toast.error('Something went wrong. Please try again later.');
     } finally {
@@ -46,28 +64,29 @@ function useContactForm() {
     }
   };
 
-  return { form, loading, handleChange, handleSubmit };
-}
-
-export default function Contact() {
-  const { form, loading, handleChange, handleSubmit } = useContactForm();
-
   return (
     <section id="contact" className="contact-full">
-      <div className="contact-glass glass">
-        <h3 className="section-title"><FaPaperPlane /> Contact Me</h3>
+      <h3 className="section-title"><FaPaperPlane /> Contact Me</h3>
 
+      <div className="contact-glass glass">
         <form className="contact-form-grid" onSubmit={handleSubmit}>
-          <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
-          <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-          <input name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} required className="full" />
-          <textarea name="message" placeholder="Message" value={form.message} onChange={handleChange} required className="full" />
+          <FloatingField id="name" label="Name" value={form.name} onChange={handleChange} />
+          <FloatingField id="email" label="Email" type="email" value={form.email} onChange={handleChange} />
+          <div className="full">
+            <FloatingField id="subject" label="Subject" value={form.subject} onChange={handleChange} />
+          </div>
+          <div className="full">
+            <FloatingField id="message" label="Message" textarea value={form.message} onChange={handleChange} />
+          </div>
+
           <button type="submit" className="btn-primary-glow full" disabled={loading}>
-            {loading ? 'Sending…' : <>Send Message <FaPaperPlane /></>}
+            {loading
+              ? <><FaSpinner className="spin" /> Sending…</>
+              : <>Send Message <FaPaperPlane /></>}
           </button>
         </form>
 
-        <div className="contact-info-mini" style={{ marginTop: 20, flexDirection: 'row', gap: 24, justifyContent: 'center' }}>
+        <div className="contact-info-mini contact-info-row">
           <span><FaEnvelope /> devaprasathdev@gmail.com</span>
           <span><FaMapMarkerAlt /> India</span>
         </div>

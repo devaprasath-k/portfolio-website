@@ -1,0 +1,60 @@
+.timeline-section { padding: 40px 0; }
+
+/* The exact pattern from the sketch:
+     0---- label       (marker, then a short horizontal stub, then content)
+     |
+     0---- label
+   A single vertical line runs down the left; each row places its own
+   marker directly on that line, with a short stub connecting marker to
+   card. */
+.timeline-simple {
+  position: relative;
+  padding-left: 26px;
+}
+
+.timeline-simple-line {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 5px;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-simple-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+.timeline-simple-row:last-child { margin-bottom: 0; }
+
+.timeline-simple-marker {
+  position: absolute;
+  left: -26px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  z-index: 1;
+}
+
+/* The short horizontal "----" stub connecting the marker to the card */
+.timeline-simple-stub {
+  position: absolute;
+  left: -14px;
+  top: 13px;
+  width: 14px;
+  height: 2px;
+  background: var(--border);
+}
+
+.timeline-simple-card {
+  flex: 1;
+  padding: 16px 18px;
+}
+.timeline-simple-card h4 { margin: 0 0 4px; font-size: clamp(0.95rem, 2vw, 1.05rem); }
+.timeline-simple-sub { margin: 0 0 6px; font-size: 0.82rem; }
+.timeline-simple-detail { margin: 0; font-size: 0.82rem; line-height: 1.55; }

@@ -8,6 +8,7 @@ import Hero from './components/Hero.jsx';
 import About from './components/About.jsx';
 import Skills from './components/Skills.jsx';
 import Projects from './components/Projects.jsx';
+import Education from './components/Education.jsx';
 import Contact from './components/Contact.jsx';
 import Certificates from './components/Certificates.jsx';
 import Resume from './components/Resume.jsx';
@@ -35,6 +36,7 @@ function Home() {
       <section className="snap-section"><Skills /></section>
       <section className="snap-section"><Projects /></section>
       <section className="snap-section"><Certificates /></section>
+      <section className="snap-section"><Education /></section>
       <section className="snap-section"><Resume /></section>
       <section className="snap-section"><Contact /></section>
       <section className="foot"><Footer /></section>

@@ -1,61 +1,69 @@
-.certificates-full { padding: 40px 0; }
+.cert-simple-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
 
-.cert-carousel {
+.cert-simple-thumb {
+  flex: 0 0 clamp(90px, 16vw, 130px);
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card-light);
+}
+.cert-simple-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.cert-simple-card:hover .cert-simple-thumb img { transform: scale(1.08); }
+.cert-thumb-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 36px;
-  width: 80%;
-  max-width: 900px;
-  margin: 0 auto;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--primary);
+  background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(0,224,255,0.15));
 }
 
-.cert-nav {
+.cert-simple-body { flex: 1; min-width: 0; }
+
+.cert-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 10px;
+}
+.cert-tag {
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid var(--border);
+  color: var(--secondary);
+}
+
+.cert-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.cert-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text);
   background: var(--card-light);
   border: 1px solid var(--border);
-  color: var(--text);
-  width: 46px;
-  height: 46px;
-  font-size: 1.1rem;
-  border-radius: 50%;
-  cursor: pointer;
-  flex-shrink: 0;
-  z-index: 2;
+  transition: border-color 0.25s ease, transform 0.2s ease;
 }
-.cert-nav:hover { border-color: var(--secondary); }
+.cert-btn:hover { border-color: var(--secondary); transform: translateY(-2px); }
 
-/* Viewport clips everything outside one slide's width */
-.cert-viewport {
-  overflow: hidden;
-  flex: 1;
+@media (max-width: 480px) {
+  .cert-simple-card { flex-direction: column; align-items: stretch; }
+  .cert-simple-thumb { flex-basis: auto; width: 100%; aspect-ratio: 16 / 9; }
 }
-
-/* Track holds every slide side by side; sliding is just moving this
-   whole strip left with a CSS transition — that's the actual carousel effect. */
-.cert-track {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-.cert-slide {
-  flex: 0 0 100%;   /* each slide takes exactly one viewport width */
-  text-align: center;
-  padding: 0 6px;
-}
-
-.cert-preview {
-  height: 260px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(0,224,255,0.15));
-  margin-bottom: 18px;
-}
-.cert-slide h4 { margin: 0 0 4px; font-size: 1.2rem; }
-
-.cert-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
-.cert-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--border);
-  cursor: pointer;
-  transition: background .2s ease, transform .2s ease;
-}
-.cert-dot.active { background: var(--primary); box-shadow: 0 0 8px var(--primary); transform: scale(1.3); }

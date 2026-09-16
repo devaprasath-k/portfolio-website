@@ -1,70 +1,64 @@
-import { useEffect, useRef, useState } from 'react';
-import { FaCertificate, FaChevronLeft, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
-import api from '../utils/api.js';
-import { certificates as staticCertificates } from '../data/portfolioData.jsx';
+import { FaCertificate, FaEye, FaDownload } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import './Timeline.css';
+import { certificates } from '../data/portfolioData';
 import './Certificates.css';
 
-const AUTOPLAY_MS = 4000;
-
 export default function Certificates() {
-  const [certificates, setCertificates] = useState(staticCertificates);
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const timerRef = useRef(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    api.get('/certificates')
-      .then(({ data }) => { if (!cancelled && data.length > 0) setCertificates(data); })
-      .catch(() => { /* keep showing the static fallback */ });
-    return () => { cancelled = true; };
-  }, []);
-
-  const next = () => setIndex((i) => (i + 1) % certificates.length);
-  const prev = () => setIndex((i) => (i - 1 + certificates.length) % certificates.length);
-
-  // Autoplay: advances one slide every AUTOPLAY_MS, unless paused
-  // (paused becomes true while the mouse is over the carousel).
-  useEffect(() => {
-    if (paused) return undefined;
-    timerRef.current = setInterval(next, AUTOPLAY_MS);
-    return () => clearInterval(timerRef.current);
-  }, [paused, certificates.length]);
-
   return (
-    <section id="certificates" className="certificates-full">
+    <section id="certificates" className="timeline-section">
       <h3 className="section-title"><FaCertificate /> Certificates</h3>
 
-      <div
-        className="cert-carousel card-surface"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <button className="cert-nav" onClick={prev} aria-label="Previous"><FaChevronLeft /></button>
+      <div className="timeline-simple">
+        <div className="timeline-simple-line" />
 
-        <div className="cert-viewport">
-          <div className="cert-track" style={{ transform: `translateX(-${index * 100}%)` }}>
-            {certificates.map((cert) => (
-              <div className="cert-slide" key={cert._id || cert.title}>
-                <div className="cert-preview">
-                  <img src="https://www.hackerrank.com/certificates/iframe/52defb77ff60" alt="" />
-                  </div>
-                <h4>{cert.title}</h4>
-                <p className="text-dim">Issued by {cert.issuer}</p>
-                <a href={cert.verifyLink || cert.link} target="_blank" rel="noreferrer" className="btn-outline-glow small">
-                  <FaCheckCircle /> Verify
-                </a>
+        {certificates.map((cert, i) => (
+          <motion.div
+            className="timeline-simple-row"
+            key={cert.credentialId || cert.title}
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.4, delay: i * 0.06 }}
+          >
+            <span className="timeline-simple-marker" />
+            <span className="timeline-simple-stub" />
+
+            <div className="timeline-simple-card card-surface cert-simple-card">
+              <div className="cert-simple-thumb">
+                {cert.image
+                  ? <img src={cert.image} alt={cert.title} loading="lazy" />
+                  : <div className="cert-thumb-placeholder"><FaCertificate /></div>}
               </div>
-            ))}
-          </div>
-        </div>
 
-        <button className="cert-nav" onClick={next} aria-label="Next"><FaChevronRight /></button>
-      </div>
+              <div className="cert-simple-body">
+                <h4>{cert.title}</h4>
+                <p className="timeline-simple-sub text-dim">
+                  {cert.issuer} &middot; {cert.date}
+                  {cert.credentialId && <> &middot; ID: {cert.credentialId}</>}
+                </p>
 
-      <div className="cert-dots">
-        {certificates.map((c, i) => (
-          <span key={c._id || c.title} className={`cert-dot ${i === index ? 'active' : ''}`} onClick={() => setIndex(i)} />
+                {cert.tags?.length > 0 && (
+                  <div className="cert-tags">
+                    {cert.tags.map((t) => <span className="cert-tag" key={t}>{t}</span>)}
+                  </div>
+                )}
+
+                <div className="cert-actions">
+                  {cert.image && (
+                    <a href={cert.image} target="_blank" rel="noreferrer" className="cert-btn">
+                      <FaEye /> View
+                    </a>
+                  )}
+                  {cert.pdf && (
+                    <a href={cert.pdf} download className="cert-btn">
+                      <FaDownload /> Download
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         ))}
       </div>
     </section>

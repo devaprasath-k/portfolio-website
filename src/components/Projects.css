@@ -1,27 +1,98 @@
 .projects-full { padding: 40px 0; }
 
+/* minmax(min(300px, 100%), 1fr) — never forces a track wider than the
+   available space, which is what prevents horizontal overflow on very
+   narrow screens (down to 320px) while still capping at a sensible
+   maximum card width on huge/ultra-wide monitors. */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: clamp(18px, 3vw, 28px);
 }
 
-.project-card { overflow: hidden; }
-.project-thumb {
-  height: 160px;
+.project-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dedicated 16:9 image area. aspect-ratio scales the box proportionally at
+   any width — this is what "responsive image, never stretched" actually
+   means: the box's height is always exactly 9/16 of its own width, on
+   every screen size, with no fixed pixel height anywhere. */
+.project-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;   /* clips the zoomed image to the rounded card corners on hover */
+  border-radius: 16px 16px 0 0;
+  background: var(--card-light);
+}
+
+.project-thumb-img,
+.project-thumb-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-thumb-placeholder {
   background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(0,224,255,0.15));
 }
-.project-card-body { padding: 20px; }
-.project-card-body h4 { margin: 0 0 8px; }
+
+/* Hover zoom — only the image scales, clipped by the wrapper's
+   overflow:hidden, so the card itself never changes size or shifts
+   neighboring cards in the grid. */
+.project-card:hover .project-thumb-img,
+.project-card:hover .project-thumb-placeholder {
+  transform: scale(1.08);
+}
+
+/* Gradient overlay — a soft dark fade at the bottom edge of the image,
+   purely decorative (per the "absolute positioning for decorative
+   elements only" rule), blending the photo into the card body below it. */
+.project-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 8, 22, 0.55), transparent 55%);
+  pointer-events: none;
+}
+
+.project-card-body { padding: clamp(16px, 3vw, 20px); }
+.project-card-body h4 { margin: 0 0 8px; font-size: clamp(1rem, 2.2vw, 1.15rem); }
 .project-card-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 .btn-primary-glow.small, .btn-outline-glow.small { padding: 8px 16px; font-size: 0.82rem; }
 
-.detail-section { padding: 22px; margin-bottom: 18px; }
-.detail-section h3 { margin: 0 0 10px; color: var(--secondary); font-size: 1.05rem; }
+.detail-section { padding: clamp(16px, 3vw, 22px); margin-bottom: 18px; }
+.detail-section h3 { margin: 0 0 10px; color: var(--secondary); font-size: clamp(0.95rem, 2vw, 1.05rem); }
 .detail-section ul { padding-left: 20px; margin: 0; }
 .detail-section code {
   background: var(--card-light);
   padding: 2px 8px;
   border-radius: 6px;
   color: var(--secondary);
+  word-break: break-word;
+}
+
+/* The detail page's header image — same 16:9 treatment as the grid cards,
+   for visual consistency between the two views. */
+.project-detail-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  background: var(--card-light);
+}
+.project-detail-thumb-wrap img,
+.project-detail-thumb-wrap .project-thumb-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

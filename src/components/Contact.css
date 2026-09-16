@@ -1,34 +1,82 @@
-.contact-info-mini {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-  font-size: 0.78rem;
-  color: var(--text-dim);
-}
-.contact-info-mini span { display: flex; align-items: center; gap: 8px; }
-
 .contact-full { padding: 40px 0 60px; }
-.contact-glass { padding: 34px; max-width: 700px; margin: 0 auto; }
+.contact-glass { padding: clamp(20px, 4vw, 38px); max-width: 640px; margin: 0 auto; }
 
 .contact-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 22px 16px;
 }
 .contact-form-grid .full { grid-column: 1 / -1; }
-.contact-form-grid input,
-.contact-form-grid textarea {
+
+/* Floating label mechanics:
+   1. The label sits ON TOP of the input at rest (absolute positioning),
+      looking like placeholder text.
+   2. :focus-within moves it up — fires the instant the field is clicked,
+      before typing starts.
+   3. The :not(:placeholder-shown) selector is the trick for "already has
+      a value but lost focus" — an input only shows its placeholder when
+      truly empty, so this selector matches exactly "has real content,"
+      keeping the label floated up even after clicking away. */
+.floating-field {
+  position: relative;
+}
+.floating-field input,
+.floating-field textarea {
+  width: 100%;
   background: var(--card-light);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 12px 14px;
-  color: #fff;
+  padding: 22px 14px 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
 }
-.contact-form-grid textarea { min-height: 120px; resize: none; }
-.contact-form-grid input:focus,
-.contact-form-grid textarea:focus { outline: none; border-color: var(--secondary); }
-.contact-form-grid button { justify-content: center; }
+.floating-field textarea { min-height: 120px; resize: vertical; }
+.floating-field input:focus,
+.floating-field textarea:focus {
+  outline: none;
+  border-color: var(--secondary);
+}
+
+.floating-field label {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.2s ease, color 0.2s ease, top 0.2s ease;
+}
+
+.floating-field input:focus + label,
+.floating-field textarea:focus + label,
+.floating-field input:not(:placeholder-shown) + label,
+.floating-field textarea:not(:placeholder-shown) + label {
+  top: 7px;
+  transform: scale(0.78);
+  color: var(--secondary);
+}
+
+/* Loading spinner — a simple continuous rotation on the icon while the
+   button is disabled/submitting. */
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-primary-glow.full { justify-content: center; }
+.btn-primary-glow:disabled { opacity: 0.75; cursor: not-allowed; }
+
+.contact-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.contact-info-row span { display: flex; align-items: center; gap: 8px; color: var(--text-dim); }
 
 @media (max-width: 600px) {
   .contact-form-grid { grid-template-columns: 1fr; }

@@ -1,36 +1,44 @@
-.logo-wrap {
+.logo-mark {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 6px 14px rgba(139, 92, 246, 0.45));
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--primary), var(--secondary));
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  animation: pulse 3s infinite alternate;
 }
 
-.logo-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+@keyframes pulse {
+  from { box-shadow: 0 0 10px rgba(139, 92, 246, 0.3); }
+  to { box-shadow: 0 0 20px rgba(139, 92, 246, 0.6); }
 }
 
-.logo-shadow {
-  fill: #000;
-  opacity: 0.28;
-  filter: blur(3px);
+
+
+.logo-mark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
+  mix-blend-mode: overlay;
 }
 
-.logo-body {
-  animation: aquaFloat 3.2s ease-in-out infinite;
-  transform-origin: 50px 50px;
+.logo-mark:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.45);
 }
 
-.logo-shine {
-  animation: aquaFloat 3.2s ease-in-out infinite;
-  transform-origin: 50px 50px;
-  pointer-events: none;
-}
-
-/* Body and shine float together — same animation, same timing, so the
-   highlight always stays glued to the glass surface as it moves. */
-@keyframes aquaFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
+.logo-letter {
+  font-family: "Playfair Display", "Poppins", sans-serif;
+  font-weight: 900;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffffff, #d1c4e9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }

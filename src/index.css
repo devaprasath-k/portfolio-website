@@ -45,9 +45,11 @@ body {
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; }
 
-/* ---------- Layout ---------- */
+/* ---------- Layout ----------
+   The navbar is now position:fixed at the top, not a grid column — so the
+   shell is a single column, and main-content just needs top padding equal
+   to the navbar's height so nothing renders underneath it. */
 .app-shell {
-  display: flex;
   min-height: 100vh;
   background:
     radial-gradient(circle at 15% 10%, rgba(139,92,246,0.10), transparent 40%),
@@ -56,12 +58,16 @@ button { font-family: inherit; }
 }
 
 .main-content {
-  margin-left: var(--sidebar-w);
-  width: calc(100% - var(--sidebar-w));
+  padding-top: 72px;   /* matches .sidebar's fixed height in Sidebar.css */
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y proximity;
   scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+@media (max-width: 575px) {
+  .main-content { padding-top: 64px; }   /* matches the shorter navbar height at this breakpoint */
 }
 
 /* Each direct section takes the full viewport and softly settles into place
@@ -76,19 +82,25 @@ button { font-family: inherit; }
   flex-direction: column;
   justify-content: center;
 }
-.foot{
-  min-height: 0vh;
-  box-sizing: border-box;
-  padding: 0px 40px;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+/* Contact is the last section before the footer — it doesn't need to be
+   forced to a full 100vh, that's what was creating the big empty gap. */
+.contact-snap {
+  min-height: auto;
 }
 
-@media (max-width: 900px) {
-  .main-content { margin-left: 0; width: 100%; }
+/* Exactly 30px between Contact and the footer, per request — this is the
+   ONLY thing controlling that gap now. */
+#site-footer {
+  margin-top: 30px;
+}
+
+@media (max-width: 991px) {
   .snap-section { padding: 24px 18px; }
+}
+
+@media (max-width: 575px) {
+  .snap-section { padding: 18px 14px; }
 }
 
 /* ---------- Reusable surfaces ---------- */
@@ -165,7 +177,7 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
   font-weight: 700;
   margin-bottom: 18px;
 }

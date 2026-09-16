@@ -24,12 +24,12 @@ export default function ProjectDetail() {
   }, [id]);
 
   if (loading && !project) {
-    return <div className="main-content" style={{ paddingTop: 60 }}><p className="text-dim">Loading…</p></div>;
+    return <div className="main-content" style={{ paddingTop: 92 }}><p className="text-dim">Loading…</p></div>;
   }
 
   if (!project) {
     return (
-      <div className="main-content" style={{ paddingTop: 60 }}>
+      <div className="main-content" style={{ paddingTop: 92 }}>
         <p>Project not found.</p>
         <Link to="/" className="btn-outline-glow">Back home</Link>
       </div>
@@ -37,14 +37,18 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="main-content" style={{ paddingTop: 40, paddingBottom: 60 }}>
+    <div className="main-content" style={{ paddingTop: 92, paddingBottom: 60 }}>
       <Link to="/#projects" className="text-dim" style={{ display: 'inline-flex', gap: 8, alignItems: 'center', marginBottom: 20 }}>
         <FaArrowLeft /> Back to projects
       </Link>
 
-      <div className="project-thumb" style={{ height: 240, borderRadius: 16, marginBottom: 24 }} />
+      <div className="project-detail-thumb-wrap">
+        {project.image?.url
+          ? <img src={project.image.url} alt={project.name} />
+          : <div className="project-thumb-placeholder" />}
+      </div>
 
-      <h1 className="gradient-text" style={{ fontSize: '2.2rem' }}>{project.name}</h1>
+      <h1 className="gradient-text" style={{ fontSize: 'clamp(1.6rem, 4vw, 2.2rem)' }}>{project.name}</h1>
       <div className="project-mini-tags" style={{ margin: '12px 0 20px' }}>
         {(project.tech || []).map((t) => <span key={t} className="tag">{t}</span>)}
       </div>

@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
-  gap: 40px;
+  gap: clamp(20px, 4vw, 40px);
   min-height: 88vh;
   padding-top: 20px;
 }
@@ -17,14 +17,14 @@
 }
 
 .hero-title {
-  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
   font-weight: 800;
   line-height: 1.05;
   margin: 0 0 12px;
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
   font-weight: 600;
   color: var(--secondary);
   margin-bottom: 14px;
@@ -35,58 +35,107 @@
   max-width: 480px;
   line-height: 1.6;
   margin-bottom: 26px;
+  font-size: clamp(0.92rem, 1.6vw, 1rem);
 }
 
 .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
+.hero-socials {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.hero-social-link {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: var(--text-dim);
+  background: rgba(var(--card-rgb), 0.5);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+.hero-social-link:hover {
+  color: var(--secondary);
+  border-color: var(--secondary);
+  transform: translateY(-3px);
+}
+
 .hero-right {
   position: relative;
-  height: 460px;
+  height: clamp(260px, 34vw, 460px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.hero-illustration {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Real profile photo: gradient border + glass frame + rounded corners,
+   per the brief. Hover scale is the only motion — no continuous animation. */
+.hero-photo-frame {
   position: relative;
   z-index: 2;
+  width: clamp(200px, 22vw, 300px);
+  height: clamp(200px, 22vw, 300px);
+  padding: 6px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.hero-photo-frame:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 55px rgba(139, 92, 246, 0.45);
+}
+.hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 22px;
+  display: block;
+  background: var(--card);
 }
 
-.illustration-icon { font-size: 5rem; color: var(--primary); }
-
+/* Decorative ring — absolute positioning here is fine per the "decorative
+   elements only" rule, it never affects document layout/flow. */
 .hero-illustration-ring {
   position: absolute;
-  width: 380px;
-  height: 380px;
+  width: clamp(230px, 28vw, 380px);
+  height: clamp(230px, 28vw, 380px);
   border-radius: 50%;
   border: 1px dashed var(--border);
 }
 
+/* Decorative floating tech icons — same rule applies. */
 .orbit-icon {
   position: absolute;
-  width: 52px;
-  height: 52px;
+  width: clamp(38px, 4.5vw, 52px);
+  height: clamp(38px, 4.5vw, 52px);
   border-radius: 50%;
   background: var(--card);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
   box-shadow: 0 0 18px rgba(0,224,255,0.15);
   z-index: 3;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .hero { grid-template-columns: 1fr; text-align: center; }
   .hero-actions { justify-content: center; }
+  .hero-socials { justify-content: center; }
   .hero-desc { margin-left: auto; margin-right: auto; }
+}
+
+/* Below this, even the shrunk illustration doesn't leave enough room for
+   the text to breathe — hide it and let text take the full width. */
+@media (max-width: 575px) {
   .hero-right { display: none; }
 }

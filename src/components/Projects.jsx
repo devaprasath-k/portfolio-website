@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaFolderOpen, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaFolderOpen, FaGithub, FaExternalLinkAlt, FaEye } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../utils/api.js';
@@ -36,7 +36,17 @@ export default function Projects() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.45, delay: i * 0.08 }}
             >
-              <div className="project-thumb" />
+              {/* Dedicated 16:9 image area — aspect-ratio keeps it
+                  proportional at every screen size, overflow:hidden on the
+                  wrapper is what makes the hover-zoom clip cleanly instead
+                  of spilling out of the rounded corners. */}
+              <div className="project-thumb-wrap">
+                {p.image?.url
+                  ? <img src={p.image.url} alt={p.name} className="project-thumb-img" />
+                  : <div className="project-thumb-placeholder" />}
+                <div className="project-thumb-overlay" />
+              </div>
+
               <div className="project-card-body">
                 <h4>{p.name}</h4>
                 <p className="text-dim">{p.short}</p>
@@ -46,7 +56,7 @@ export default function Projects() {
                 <div className="project-card-actions">
                   <a href={p.github} target="_blank" rel="noreferrer" className="btn-outline-glow small"><FaGithub /> Code</a>
                   <a href={p.demo} target="_blank" rel="noreferrer" className="btn-outline-glow small"><FaExternalLinkAlt /> Demo</a>
-                  <Link to={`/projects/${id}`} className="btn-primary-glow small">View Details</Link>
+                  <Link to={`/projects/${id}`} className="btn-primary-glow small"><FaEye /> View Details</Link>
                 </div>
               </div>
             </motion.div>
